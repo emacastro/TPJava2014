@@ -42,6 +42,16 @@ public class DataConnectionManager {
 		return conexion;
 	}
 	
+	public void closeConexion(){
+		try {
+			if(conexion!=null && !conexion.isClosed()){
+				conexion.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private DataConnectionManager()
 	{ 
 	}
