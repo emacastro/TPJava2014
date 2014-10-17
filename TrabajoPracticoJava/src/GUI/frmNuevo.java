@@ -20,6 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import Entidades.*;
 
 public class frmNuevo extends JFrame {
 
@@ -81,12 +82,12 @@ public class frmNuevo extends JFrame {
 		cbxTipo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED)
-					if (cbxTipo.getSelectedIndex() == 1) // Selecciona la opcion Lavarropa
+					if (cbxTipo.getSelectedIndex() == 1) // Muestra los controles que se pueden usar si se selecciona la opcion Lavarropa
 					{
 						agregarElectrodomestico();
 						agregarLavarropa();
 					}
-					else // Selecciona la opcion Televisor
+					else // Muestra los controles que se pueden usar si se selecciona la opcion Televisor
 					{
 						agregarElectrodomestico();
 						agregarTelevisor();
@@ -206,25 +207,19 @@ public class frmNuevo extends JFrame {
 		contentPane.add(lblCarga);
 		lblCarga.setVisible(false);
 		
-		cbxColor = new JComboBox();
+		cbxColor = new JComboBox(Color.getColores()); //Mostrar los datos desde la bd?
 		cbxColor.setBounds(205, 167, 200, 25);
-		/*cbxColor.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED)
-					if (cbxTipo.getSelectedIndex() == 1) // Selecciona la opcion Lavarropa
-					{
-					
-					}*/
-		cbxColor.setToolTipText("");
 		contentPane.add(cbxColor);
 		cbxColor.setVisible(false);
 		
-		cbxConsumo = new JComboBox();
+		String cons= String.valueOf(ConsumoEnergetico.getTipos()); //idem
+		String[] consumos = cons.split("");
+		cbxConsumo = new JComboBox(consumos);
 		cbxConsumo.setBounds(205, 206, 200, 25);
-		cbxConsumo.setToolTipText("");
 		contentPane.add(cbxConsumo);
 		cbxConsumo.setVisible(false);
 	}
+	
 	public void agregarElectrodomestico()
 	{
 		lblPrecio.setVisible(true);
