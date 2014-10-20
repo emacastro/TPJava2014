@@ -32,8 +32,14 @@ public class Television extends Electrodomestico {
 		this.setSintonizador(sintonizador_DEFAULT);
 	}
 	
-	public Television (int precio, char consumo, String color, double peso, int resolucion, boolean sintonizador){
+	public Television (double precio, char consumo, String color, double peso, int resolucion, boolean sintonizador){
 		super(precio, consumo, color, peso);
+		this.setResolucion(resolucion);
+		this.setSintonizador(sintonizador);
+	}
+	
+	public Television (int id, double precio, char consumo, String color, double peso, int resolucion, boolean sintonizador){
+		super(id, precio, consumo, color, peso);
 		this.setResolucion(resolucion);
 		this.setSintonizador(sintonizador);
 	}

@@ -2,9 +2,11 @@ package Entidades;
 
 
 public class Electrodomestico {
-	private static int precio_DEFAULT = 100;
+	private static double precio_DEFAULT = 100;
 	private static double peso_DEFAULT = 5;
+	private static int id_FINAL=0;
 	
+	private int id;
 	private double precioBase;
 	private ConsumoEnergetico consumo;
 	private Color color;
@@ -14,7 +16,7 @@ public class Electrodomestico {
 		return precioBase;
 	}
 
-	public void setPrecioBase(int precioBase) {
+	public void setPrecioBase(double precioBase) {
 		this.precioBase = precioBase;
 	}
 
@@ -43,22 +45,44 @@ public class Electrodomestico {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+	public int getId(){
+		return id;
+	}
+	
+	public void setId(int Id)
+	{
+		this.id = Id;
+	}
 
 	public Electrodomestico () {
+		aumentaID();
 		this.setPrecioBase(precio_DEFAULT);
 		this.setConsumo(ConsumoEnergetico.consumo_DEFAULT);
 		this.setColor(Color.color_DEFAULT);
 		this.setPeso(peso_DEFAULT);
 	}
 	
-	public Electrodomestico(int precio, double peso ){
+	public Electrodomestico(double precio, double peso ){
+		aumentaID();
 		this.setPrecioBase(precio);
 		this.setConsumo(ConsumoEnergetico.consumo_DEFAULT);
 		this.setColor(Color.color_DEFAULT);
 		this.setPeso(peso);
 	}
 	
-	public Electrodomestico (int precio, char consumo, String color, double peso){
+	public Electrodomestico (double precio, char consumo, String color, double peso){
+		aumentaID();
+		verificaDatos(precio, consumo, color, peso);
+	}
+	
+	public Electrodomestico (int id, double precio, char consumo, String color, double peso){
+		this.id = id;
+		verificaDatos(precio, consumo, color, peso);
+	}
+
+	public void verificaDatos(double precio, char consumo, String color,
+			double peso) {
 		this.setPrecioBase(precio);
 		if(comprobarConsumoEnergetico(consumo)){
 			this.setConsumo(new ConsumoEnergetico(consumo));
@@ -72,6 +96,8 @@ public class Electrodomestico {
 		}
 		this.setPeso(peso);
 	}
+	
+	
 	
 	public boolean comprobarConsumoEnergetico (char letra){
 		boolean rta=false;
@@ -109,5 +135,10 @@ public class Electrodomestico {
 	
 	public double precioFinal(){
 		return this.getPrecioBase() + this.precioPorPeso(getPeso()) + this.getConsumo().precioPorConsumo();
+	}
+	
+	public void aumentaID(){
+		this.id = id_FINAL;
+		id_FINAL += 1;
 	}
 }

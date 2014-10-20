@@ -2,16 +2,16 @@ package Entidades;
 
 
 public class Lavarropas extends Electrodomestico {
-	private static int carga_DEFAULT = 5;
-	private int carga;
+	private static double carga_DEFAULT = 5;
+	private double carga;
 	
 	
-	public int getCarga() {
+	public double getCarga() {
 		return carga;
 	}
 
 
-	public void setCarga(int carga) {
+	public void setCarga(double carga) {
 		this.carga = carga;
 	}
 
@@ -26,8 +26,13 @@ public class Lavarropas extends Electrodomestico {
 		this.setCarga(carga_DEFAULT);
 	}
 	
-	public Lavarropas (int precio, char consumo, String color, double peso, int carga){
+	public Lavarropas (double precio, char consumo, String color, double peso, double carga){
 		super(precio, consumo, color, peso);
+		this.setCarga(carga);
+	}
+	
+	public Lavarropas(int id,double precio,char consumo,String color,double peso,double carga) {
+		super(id,precio,consumo,color,peso);
 		this.setCarga(carga);
 	}
 	
