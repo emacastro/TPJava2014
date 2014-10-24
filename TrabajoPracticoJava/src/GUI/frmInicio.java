@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -13,14 +12,20 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
-import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JButton;
 
-import Data.ElectrodomesticoAdapter;
+import Entidades.*;
+import Negocio.*;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
+import javax.swing.ScrollPaneConstants;
 
 public class frmInicio extends JFrame {
 
@@ -31,6 +36,8 @@ public class frmInicio extends JFrame {
 	private JPanel contentPane;
 	private JPanel pnlTabla;
 	private JTable tblElectrodomesticos;
+	private DefaultTableModel model;//probando modelo
+	private ArrayList<Electrodomestico> lista;//probando arraylist
 
 	/**
 	 * Launch the application.
@@ -71,47 +78,59 @@ public class frmInicio extends JFrame {
 		pnlTitulo.add(lblElectrodomsticos);
 		
 		JButton btnNuevo = new JButton("Nuevo");
-		btnNuevo.setBounds(44, 76, 89, 23);
+		btnNuevo.setBounds(627, 105, 89, 23);
 		contentPane.add(btnNuevo);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(169, 76, 89, 23);
+		btnModificar.setBounds(627, 139, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(292, 76, 89, 23);
+		btnEliminar.setBounds(627, 173, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		pnlTabla = new JPanel();
-		pnlTabla.setBounds(10, 110, 580, 181);
+		pnlTabla.setBounds(15, 76, 582, 215);
 		contentPane.add(pnlTabla);
 		
-		tblElectrodomesticos = new JTable();
-		tblElectrodomesticos.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
+		model = new DefaultTableModel();
+		model.setColumnIdentifiers(new Object[] {
 				"Tipo", "Descripcion", "Color", "Consumo", "Peso", "Carga", "Resolucion", "TDT", "Precio"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Object.class, String.class, Object.class, Object.class, Float.class, Float.class, Float.class, Boolean.class, Float.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tblElectrodomesticos.getColumnModel().getColumn(1).setPreferredWidth(90);
-		tblElectrodomesticos.getColumnModel().getColumn(3).setPreferredWidth(60);
-		tblElectrodomesticos.getColumnModel().getColumn(4).setPreferredWidth(60);
-		tblElectrodomesticos.getColumnModel().getColumn(7).setPreferredWidth(50);
-		tblElectrodomesticos.setPreferredScrollableViewportSize(new Dimension(570, 145));
-		JScrollPane scrollPane = new JScrollPane(tblElectrodomesticos);
-		pnlTabla.add(scrollPane, BorderLayout.CENTER);
+			});
+		
+		
+		JButton btnBusqueda = new JButton("Busqueda");
+		btnBusqueda.setBounds(627, 207, 89, 23);
+		contentPane.add(btnBusqueda);
 		
 		cargarDatos();
 	}
 
 	private void cargarDatos() {
+		model.setNumRows(0);
+	    lista = new ArrayList<Electrodomestico>();
+	    NegElectrodomestico elec = new NegElectrodomestico();
+	    lista = elec.listarElectrodomesticos();
+	    
+	    for (Iterator<Electrodomestico> it = lista.iterator(); it.hasNext();) {
+	    
+	        Electrodomestico e = (Electrodomestico) it.next();
+	        model.addRow(new Object[]{
+	            e.getId(),null,e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPrecioBase(),null,null
+	        });
+	    }
+	    
+	    tblElectrodomesticos = new JTable(model);
+	    /*tblElectrodomesticos.getColumnModel().getColumn(1).setPreferredWidth(90);
+		tblElectrodomesticos.getColumnModel().getColumn(3).setPreferredWidth(60);
+		tblElectrodomesticos.getColumnModel().getColumn(4).setPreferredWidth(60);
+		tblElectrodomesticos.getColumnModel().getColumn(7).setPreferredWidth(50);
+		tblElectrodomesticos.setPreferredScrollableViewportSize(new Dimension(575, 180));*/
+	    
+		JScrollPane scrollPane = new JScrollPane(tblElectrodomesticos);
+		scrollPane.setBounds(10, 11, 456, 104);
+		pnlTabla.add(scrollPane);
+		
 	}
+	
 }
