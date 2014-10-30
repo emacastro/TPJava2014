@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -9,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,7 +19,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
 import Entidades.*;
+import Negocio.*;
 
 public class frmNuevo extends JFrame {
 
@@ -42,12 +43,13 @@ public class frmNuevo extends JFrame {
 	private JRadioButton rbtTrue;
 	private JTextField txtCarga;
 	private JLabel lblCarga;
+	private ButtonGroup botones = new ButtonGroup();
 	
 	private JComboBox cbxColor;
 	private JComboBox cbxConsumo;
 	/**
 	 * Launch the application.
-	 */
+	 *//*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -59,7 +61,7 @@ public class frmNuevo extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -86,11 +88,13 @@ public class frmNuevo extends JFrame {
 					{
 						agregarElectrodomestico();
 						agregarLavarropa();
+						datosDefaultLavarropas();
 					}
 					else // Muestra los controles que se pueden usar si se selecciona la opcion Televisor
 					{
 						agregarElectrodomestico();
 						agregarTelevisor();
+						datosDefaultTelevision();
 					}
 			}
 		});
@@ -126,23 +130,38 @@ public class frmNuevo extends JFrame {
 		txtPrecio.setBounds(205, 84, 200, 25);
 		contentPane.add(txtPrecio);
 		txtPrecio.setColumns(10);
+		txtPrecio.setText(String.valueOf((new Electrodomestico()).getPrecioBase()));
 		txtPrecio.setVisible(false);
 		
 		txtPeso = new JTextField();
 		txtPeso.setBounds(205, 124, 200, 25);
 		txtPeso.setColumns(10);
 		contentPane.add(txtPeso);
+		txtPeso.setText(String.valueOf((new Electrodomestico()).getPeso()));
 		txtPeso.setVisible(false);
 		
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setBounds(205, 378, 89, 23);
 		btnGuardar.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
-				//falta definir como tomar el color y el consumo
-				//dataElectrodomestico.altaElectrodomestico(txtPrecio.getText(), txtPeso.getText(), color, consumo, txtCarga.getText(), txtResolucion.getText(), tdt);
-				JOptionPane.showMessageDialog(null, "El electrodomestico ha sido registrado", "Información", JOptionPane.INFORMATION_MESSAGE);
-				//incompleto
-				
+				double precio = Double.parseDouble(txtPrecio.getText());
+				char consumo = (cbxConsumo.getSelectedItem().toString()).charAt(0);
+				double peso = Double.parseDouble(txtPeso.getText());
+				double carga = Double.parseDouble(txtCarga.getText());
+				int resol = Integer.parseInt(txtResolucion.getText());
+				boolean sint = rbtTrue.isSelected();
+				Electrodomestico e = null;
+				if ((cbxTipo.getSelectedItem().toString()).equals("Lavarropa")) {
+					Lavarropas l = new Lavarropas(precio,consumo,cbxColor.getSelectedItem().toString(), peso, carga);
+					e = l;
+					}
+				else if((cbxTipo.getSelectedItem().toString()).equals("Televisor")) {
+					Television t = new Television(precio,consumo,cbxColor.getSelectedItem().toString(), peso, resol, sint);
+					e = t;
+				}
+					NegElectrodomestico ne = new NegElectrodomestico();
+					ne.nuevoElectrodomestico(e);
+				JOptionPane.showMessageDialog(null, "Nuevo electrodomestico registrado", "Información", JOptionPane.INFORMATION_MESSAGE);	
 			}
 		});
 		contentPane.add(btnGuardar);
@@ -152,14 +171,14 @@ public class frmNuevo extends JFrame {
 		btnCancelar.setBounds(316, 378, 89, 23);
 		btnCancelar.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
-				int i = JOptionPane.showConfirmDialog(null,"¿Confirma que desea Cancelar?","Confirmar Cancelación",JOptionPane.YES_NO_OPTION);  
+				int i = JOptionPane.showConfirmDialog(null,"¿Desea Cancelar?","Cancelación",JOptionPane.YES_NO_OPTION);  
 				if(i==0){
-							dispose();
+				dispose();
 				}								
 			}
 		});
 		contentPane.add(btnCancelar);
-		btnCancelar.setVisible(false);
+		btnCancelar.setVisible(true);
 		
 		lblResolucion = new JLabel("Resolucion:");
 		lblResolucion.setBounds(94, 291, 82, 14);
@@ -195,6 +214,9 @@ public class frmNuevo extends JFrame {
 		contentPane.add(rbtFalse);
 		rbtFalse.setVisible(false);
 		
+		botones.add(rbtTrue);
+		botones.add(rbtFalse);
+		
 		txtCarga = new JTextField();
 		txtCarga.setBounds(205, 243, 200, 25);
 		contentPane.add(txtCarga);
@@ -210,6 +232,7 @@ public class frmNuevo extends JFrame {
 		cbxColor = new JComboBox(Color.getColores()); //Mostrar los datos desde la bd?
 		cbxColor.setBounds(205, 167, 200, 25);
 		contentPane.add(cbxColor);
+		cbxColor.setSelectedItem("blanco");
 		cbxColor.setVisible(false);
 		
 		String cons= String.valueOf(ConsumoEnergetico.getTipos()); //idem
@@ -217,6 +240,7 @@ public class frmNuevo extends JFrame {
 		cbxConsumo = new JComboBox(consumos);
 		cbxConsumo.setBounds(205, 206, 200, 25);
 		contentPane.add(cbxConsumo);
+		cbxConsumo.setSelectedItem("F");
 		cbxConsumo.setVisible(false);
 	}
 	
@@ -260,5 +284,17 @@ public class frmNuevo extends JFrame {
 		txtCarga.setVisible(true);
 		lblCarga.setVisible(true);
 	}
-
+	
+	public void datosDefaultLavarropas()
+	{
+		txtResolucion.setText("0");
+		txtCarga.setText(String.valueOf((new Lavarropas()).getCarga()));
+	}
+	
+	public void datosDefaultTelevision()
+	{
+		txtResolucion.setText(String.valueOf((new Television()).getResolucion()));
+		rbtFalse.setSelected(true);
+		txtCarga.setText("0");
+	}
 }

@@ -6,12 +6,22 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.Color;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class frmBusqueda extends JFrame {
 
@@ -19,7 +29,7 @@ public class frmBusqueda extends JFrame {
 
 	/**
 	 * Launch the application.
-	 */
+	 *//*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -32,7 +42,7 @@ public class frmBusqueda extends JFrame {
 			}
 		});
 	}
-
+*/
 	/**
 	 * Create the frame.
 	 */
@@ -80,7 +90,20 @@ public class frmBusqueda extends JFrame {
 		contentPane.add(comboBox);
 		
 		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(96, 236, 109, 29);
+		btnBuscar.setBounds(28, 236, 109, 29);
 		contentPane.add(btnBuscar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int i = JOptionPane.showConfirmDialog(null,"¿Desea Cancelar?","Cancelación",JOptionPane.YES_NO_OPTION);  
+				if(i==0){
+				dispose();
+				}
+			}
+		});
+		btnCancelar.setBounds(147, 236, 109, 29);
+		contentPane.add(btnCancelar);
 	}
 }

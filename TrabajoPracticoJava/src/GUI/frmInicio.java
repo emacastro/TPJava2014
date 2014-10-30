@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -26,6 +25,8 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class frmInicio extends JFrame {
 
@@ -34,10 +35,9 @@ public class frmInicio extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JPanel pnlTabla;
-	private JTable tblElectrodomesticos;
-	private DefaultTableModel model;//probando modelo
-	private ArrayList<Electrodomestico> lista;//probando arraylist
+	private DefaultTableModel model;
+	private ArrayList<Electrodomestico> elecs;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -78,59 +78,72 @@ public class frmInicio extends JFrame {
 		pnlTitulo.add(lblElectrodomsticos);
 		
 		JButton btnNuevo = new JButton("Nuevo");
-		btnNuevo.setBounds(627, 105, 89, 23);
+		btnNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmNuevo formNuevo = new frmNuevo();
+				formNuevo.setVisible(true);
+			}
+		});
+		btnNuevo.setBounds(627, 105, 106, 23);
 		contentPane.add(btnNuevo);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(627, 139, 89, 23);
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		btnModificar.setBounds(627, 139, 106, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(627, 173, 89, 23);
+		btnEliminar.setBounds(627, 173, 106, 23);
 		contentPane.add(btnEliminar);
-		
-		pnlTabla = new JPanel();
-		pnlTabla.setBounds(15, 76, 582, 215);
-		contentPane.add(pnlTabla);
-		
-		model = new DefaultTableModel();
-		model.setColumnIdentifiers(new Object[] {
-				"Tipo", "Descripcion", "Color", "Consumo", "Peso", "Carga", "Resolucion", "TDT", "Precio"
-			});
 		
 		
 		JButton btnBusqueda = new JButton("Busqueda");
-		btnBusqueda.setBounds(627, 207, 89, 23);
+		btnBusqueda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmBusqueda formBusqueda = new frmBusqueda();
+				formBusqueda.setVisible(true);
+			}
+		});
+		btnBusqueda.setBounds(627, 207, 106, 23);
 		contentPane.add(btnBusqueda);
+		
+		model = new DefaultTableModel();
+		model.setColumnCount(9);
+		model.setColumnIdentifiers(new Object[] {
+				"Id", "Descripcion", "Color", "Consumo", "Peso", "Carga", "Resolucion", "TDT", "Precio"
+			});
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(28, 89, 566, 182);
+		contentPane.add(scrollPane);
+		
+		table = new JTable(model);
+		
+		scrollPane.setViewportView(table);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		btnSalir.setBounds(627, 241, 106, 23);
+		contentPane.add(btnSalir);
 		
 		cargarDatos();
 	}
 
 	private void cargarDatos() {
 		model.setNumRows(0);
-	    lista = new ArrayList<Electrodomestico>();
-	    NegElectrodomestico elec = new NegElectrodomestico();
-	    lista = elec.listarElectrodomesticos();
-	    
-	    for (Iterator<Electrodomestico> it = lista.iterator(); it.hasNext();) {
-	    
-	        Electrodomestico e = (Electrodomestico) it.next();
+		elecs = (new NegElectrodomestico()).listarElectrodomesticos();
+		for (Electrodomestico e : elecs) {
 	        model.addRow(new Object[]{
-	            e.getId(),null,e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPrecioBase(),null,null
-	        });
+	        		e.getId(),null,e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPeso(),null,null,null,e.getPrecioBase()
+	        	});
+	    	}
 	    }
-	    
-	    tblElectrodomesticos = new JTable(model);
-	    /*tblElectrodomesticos.getColumnModel().getColumn(1).setPreferredWidth(90);
-		tblElectrodomesticos.getColumnModel().getColumn(3).setPreferredWidth(60);
-		tblElectrodomesticos.getColumnModel().getColumn(4).setPreferredWidth(60);
-		tblElectrodomesticos.getColumnModel().getColumn(7).setPreferredWidth(50);
-		tblElectrodomesticos.setPreferredScrollableViewportSize(new Dimension(575, 180));*/
-	    
-		JScrollPane scrollPane = new JScrollPane(tblElectrodomesticos);
-		scrollPane.setBounds(10, 11, 456, 104);
-		pnlTabla.add(scrollPane);
-		
-	}
-	
 }

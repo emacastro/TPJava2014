@@ -3,7 +3,7 @@ package Entidades;
 public class ConsumoEnergetico {
 	private static char[] tipos = {'A','B','C','D','E','F'};
 	private char consumo;
-	public static ConsumoEnergetico consumo_DEFAULT = new ConsumoEnergetico (tipos[6]);
+	public static ConsumoEnergetico consumo_DEFAULT = new ConsumoEnergetico (tipos[5]);
 	
 	public ConsumoEnergetico(char consumoActual ){
 		this.consumo = consumoActual;

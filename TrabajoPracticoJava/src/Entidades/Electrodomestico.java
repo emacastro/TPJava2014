@@ -1,16 +1,18 @@
 package Entidades;
 
+import Data.ElectrodomesticoAdapter;
+
 
 public class Electrodomestico {
 	private static double precio_DEFAULT = 100;
 	private static double peso_DEFAULT = 5;
-	private static int id_FINAL=0;
-	
 	private int id;
 	private double precioBase;
 	private ConsumoEnergetico consumo;
 	private Color color;
 	private double peso;
+	
+	private static int id_FINAL;
 	
 	public double getPrecioBase() {
 		return precioBase;
@@ -56,7 +58,7 @@ public class Electrodomestico {
 	}
 
 	public Electrodomestico () {
-		aumentaID();
+		//aumentaID();
 		this.setPrecioBase(precio_DEFAULT);
 		this.setConsumo(ConsumoEnergetico.consumo_DEFAULT);
 		this.setColor(Color.color_DEFAULT);
@@ -64,7 +66,7 @@ public class Electrodomestico {
 	}
 	
 	public Electrodomestico(double precio, double peso ){
-		aumentaID();
+		//aumentaID();
 		this.setPrecioBase(precio);
 		this.setConsumo(ConsumoEnergetico.consumo_DEFAULT);
 		this.setColor(Color.color_DEFAULT);
@@ -72,7 +74,7 @@ public class Electrodomestico {
 	}
 	
 	public Electrodomestico (double precio, char consumo, String color, double peso){
-		aumentaID();
+		//aumentaID();
 		verificaDatos(precio, consumo, color, peso);
 	}
 	
@@ -81,8 +83,8 @@ public class Electrodomestico {
 		verificaDatos(precio, consumo, color, peso);
 	}
 
-	public void verificaDatos(double precio, char consumo, String color,
-			double peso) {
+	public void verificaDatos(double precio, char consumo, String color,double peso)
+	{
 		this.setPrecioBase(precio);
 		if(comprobarConsumoEnergetico(consumo)){
 			this.setConsumo(new ConsumoEnergetico(consumo));
@@ -138,7 +140,8 @@ public class Electrodomestico {
 	}
 	
 	public void aumentaID(){
-		this.id = id_FINAL;
 		id_FINAL += 1;
+		this.id = id_FINAL;
+		
 	}
 }
