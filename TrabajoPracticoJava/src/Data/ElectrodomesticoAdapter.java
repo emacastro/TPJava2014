@@ -143,19 +143,17 @@ public class ElectrodomesticoAdapter {
 		}
 	}
 	
-	public void deleteOne(Electrodomestico elec)
+	public void deleteOne(int id)
     {
-    	String sql = "DELETE FROM electrodomesticos WHERE id=?";
+    	String sql = "DELETE FROM electrodomestico WHERE id_Electrodomestico="+id;
 		
-		PreparedStatement sentencia = null;
-		ResultSet rs = null;
+		Statement sentencia = null;
 		
 		try 
 		{			
-			sentencia = DataConnectionManager.getInstancia().getConexion().prepareStatement(sql);
-			sentencia.setInt(1, elec.getId());
-			sentencia.executeUpdate();					
-		} 
+			sentencia = DataConnectionManager.getInstancia().getConexion().createStatement();
+			sentencia.executeUpdate(sql);	
+		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
@@ -164,7 +162,6 @@ public class ElectrodomesticoAdapter {
 		{
 			try
 			{
-				if (rs!=null){rs.close();}
 				if (sentencia!=null && !sentencia.isClosed())
 				{
 					sentencia.close();
@@ -178,7 +175,7 @@ public class ElectrodomesticoAdapter {
 		}
     }
 	
-	public void updateOne (Electrodomestico elec, Color cl, ConsumoEnergetico ce)
+	public void updateOne (Electrodomestico elec, String tipo)
 	{
 		String sql="UPDATE electrodomestico SET(precio=?,peso=?,carga=?,sintonizador=?,resolucion=?,color=?,consumo=?) WHERE id =?";
 		PreparedStatement ps = null;
@@ -192,8 +189,8 @@ public class ElectrodomesticoAdapter {
 				ps.setDouble(3, ((Lavarropas)elec).getCarga());
 				ps.setObject(4, null);
 				ps.setObject(5, null);
-				ps.setString(6, cl.getColor());
-				String consen = String.valueOf(ce.getConsumo());
+				ps.setString(6, elec.getColor().getColor());
+				String consen = String.valueOf(elec.getConsumo().getConsumo());
 				ps.setString(7, consen.substring(0,1));
 				ps.setInt(8, elec.getId());
 			}
@@ -204,8 +201,8 @@ public class ElectrodomesticoAdapter {
 				ps.setObject(3, null);
 				ps.setBoolean(4, ((Television)elec).isSintonizador());
 				ps.setInt(5, ((Television)elec).getResolucion());
-				ps.setString(6, cl.getColor());
-				String consen = String.valueOf(ce.getConsumo());
+				ps.setString(6, elec.getColor().getColor());
+				String consen = String.valueOf(elec.getConsumo().getConsumo());
 				ps.setString(7, consen.substring(0,1));
 				ps.setInt(8, elec.getId());
 			}

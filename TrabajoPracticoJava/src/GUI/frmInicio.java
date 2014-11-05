@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +26,7 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 import javax.swing.ScrollPaneConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -90,13 +92,45 @@ public class frmInicio extends JFrame {
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+			int row = table.getSelectedRow();
+				if(row < 0){
+					JOptionPane.showMessageDialog(null,"Debe Elegir un Articulo");
+					}
+					else{
+						String id= table.getValueAt(row, 0).toString();
+						String tipo = table.getValueAt(row, 1).toString();
+						elecs = (new NegElectrodomestico()).listarElectrodomesticos();
+						Electrodomestico el = null;
+						for (int i = 0; i < elecs.size(); i++) {
+							if(elecs.get(i).getId()==Integer.parseInt(id))
+							{
+								el=elecs.get(i);
+							}
+						}
+						frmModificar formModificar = new frmModificar(el);
+						formModificar.setVisible(true);
+					}
 			}
 		});
 		btnModificar.setBounds(627, 139, 106, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row = table.getSelectedRow();
+				if(row < 0){
+					JOptionPane.showMessageDialog(null,"Debe Elegir un Articulo");
+					}
+					else{
+						String id= table.getValueAt(row, 0).toString();
+						NegElectrodomestico ne = new NegElectrodomestico();
+						ne.eliminarElectrodomestico(Integer.parseInt(id));
+						DefaultTableModel modelo = (DefaultTableModel)table.getModel(); 
+						modelo.removeRow(row);
+					}
+			}
+		});
 		btnEliminar.setBounds(627, 173, 106, 23);
 		contentPane.add(btnEliminar);
 		
@@ -114,14 +148,16 @@ public class frmInicio extends JFrame {
 		model = new DefaultTableModel();
 		model.setColumnCount(9);
 		model.setColumnIdentifiers(new Object[] {
-				"Id", "Descripcion", "Color", "Consumo", "Peso", "Carga", "Resolucion", "TDT", "Precio"
+				"Id", "Tipo", "Color", "Consumo", "Peso", "Carga", "Resolucion", "TDT", "Precio"
 			});
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(28, 89, 566, 182);
 		contentPane.add(scrollPane);
 		
 		table = new JTable(model);
+		this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		scrollPane.setViewportView(table);
 		
@@ -141,9 +177,16 @@ public class frmInicio extends JFrame {
 		model.setNumRows(0);
 		elecs = (new NegElectrodomestico()).listarElectrodomesticos();
 		for (Electrodomestico e : elecs) {
+			if (e instanceof Lavarropas){
 	        model.addRow(new Object[]{
-	        		e.getId(),null,e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPeso(),null,null,null,e.getPrecioBase()
+	        		e.getId(),e.getClass().getSimpleName(),e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPeso(),((Lavarropas) e).getCarga(),null,null,e.getPrecioBase()
 	        	});
+			}
+			else {
+				model.addRow(new Object[]{
+		        		e.getId(),e.getClass().getSimpleName(),e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPeso(),null,((Television) e).getResolucion(),((Television) e).isSintonizador(),e.getPrecioBase()
+		        	});
+			}
 	    	}
 	    }
 }

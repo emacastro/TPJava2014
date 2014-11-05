@@ -26,11 +26,21 @@ public class NegElectrodomestico {
 	{
 		electro.addOne(elec);
 	}
-	/*
+	
+	public int ultimoID()
+	{
+		return electro.ultimoID();
+	}
+	
+	public void modificarElectrodomestico (Electrodomestico elec, String tipo)
+	{
+		electro.updateOne(elec, tipo);
+	}
+	
 	
 	public void eliminarElectrodomestico(int id)
 	{
 		electro.deleteOne(id);
-	}*/
+	}
 	
 }
