@@ -45,6 +45,7 @@ public class frmNuevo extends JFrame {
 	private JLabel lblCarga;
 	private ButtonGroup botones = new ButtonGroup();
 	private int id;
+	private modeloTabla modelo;
 	
 	private JComboBox cbxColor;
 	private JComboBox cbxConsumo;
@@ -53,9 +54,9 @@ public class frmNuevo extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public frmNuevo() {
+	public frmNuevo(modeloTabla model) {
 		setTitle("Nuevo Electrodomestico");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 487, 470);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -131,6 +132,7 @@ public class frmNuevo extends JFrame {
 		txtPeso.setText(String.valueOf((new Electrodomestico()).getPeso()));
 		txtPeso.setVisible(false);
 		
+		this.modelo = model;
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setBounds(205, 378, 89, 23);
 		btnGuardar.addMouseListener(new MouseAdapter() {
@@ -153,7 +155,9 @@ public class frmNuevo extends JFrame {
 					e = t;
 				}
 					ne.nuevoElectrodomestico(e);
-				JOptionPane.showMessageDialog(null, "Nuevo electrodomestico registrado", "Información", JOptionPane.INFORMATION_MESSAGE);	
+					modelo.nuevaFila(e);
+				JOptionPane.showMessageDialog(null, "Nuevo electrodomestico registrado", "Información", JOptionPane.INFORMATION_MESSAGE);
+				dispose();
 			}
 		});
 		contentPane.add(btnGuardar);

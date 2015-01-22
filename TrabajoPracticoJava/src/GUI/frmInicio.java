@@ -37,9 +37,11 @@ public class frmInicio extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private DefaultTableModel model;
 	private ArrayList<Electrodomestico> elecs;
 	private JTable table;
+	private JScrollPane scrollPane;
+	
+	private modeloTabla modelo;
 
 	/**
 	 * Launch the application.
@@ -82,7 +84,7 @@ public class frmInicio extends JFrame {
 		JButton btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmNuevo formNuevo = new frmNuevo();
+				frmNuevo formNuevo = new frmNuevo(modelo);
 				formNuevo.setVisible(true);
 			}
 		});
@@ -124,10 +126,7 @@ public class frmInicio extends JFrame {
 					}
 					else{
 						String id= table.getValueAt(row, 0).toString();
-						NegElectrodomestico ne = new NegElectrodomestico();
-						ne.eliminarElectrodomestico(Integer.parseInt(id));
-						DefaultTableModel modelo = (DefaultTableModel)table.getModel(); 
-						modelo.removeRow(row);
+						modelo.borraFila(row, id);
 					}
 			}
 		});
@@ -145,20 +144,14 @@ public class frmInicio extends JFrame {
 		btnBusqueda.setBounds(627, 207, 106, 23);
 		contentPane.add(btnBusqueda);
 		
-		model = new DefaultTableModel();
-		model.setColumnCount(9);
-		model.setColumnIdentifiers(new Object[] {
-				"Id", "Tipo", "Color", "Consumo", "Peso", "Carga", "Resolucion", "TDT", "Precio"
-			});
 		
-		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(28, 89, 566, 182);
 		contentPane.add(scrollPane);
 		
-		table = new JTable(model);
+		table = new JTable(modelo);
 		this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -170,23 +163,13 @@ public class frmInicio extends JFrame {
 		btnSalir.setBounds(627, 241, 106, 23);
 		contentPane.add(btnSalir);
 		
-		cargarDatos();
+		cargarTabla();
 	}
 
-	private void cargarDatos() {
-		model.setNumRows(0);
+	
+	public void cargarTabla() {
 		elecs = (new NegElectrodomestico()).listarElectrodomesticos();
-		for (Electrodomestico e : elecs) {
-			if (e instanceof Lavarropas){
-	        model.addRow(new Object[]{
-	        		e.getId(),e.getClass().getSimpleName(),e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPeso(),((Lavarropas) e).getCarga(),null,null,e.getPrecioBase()
-	        	});
-			}
-			else {
-				model.addRow(new Object[]{
-		        		e.getId(),e.getClass().getSimpleName(),e.getColor().getColor(),e.getConsumo().getConsumo(),e.getPeso(),null,((Television) e).getResolucion(),((Television) e).isSintonizador(),e.getPrecioBase()
-		        	});
-			}
-	    	}
-	    }
+		modelo = new modeloTabla(elecs);
+		table.setModel(modelo);
+	}
 }

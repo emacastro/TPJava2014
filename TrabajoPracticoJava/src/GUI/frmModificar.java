@@ -70,7 +70,7 @@ public class frmModificar extends JFrame {
 	 */
 	public frmModificar(final Electrodomestico elec) {
 		setTitle("Modificar Electrodomestico");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 487, 470);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
