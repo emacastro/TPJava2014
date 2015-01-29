@@ -84,29 +84,18 @@ public class frmModificar extends JFrame {
 		cbxTipo = new JComboBox();
 		cbxTipo.setBounds(205, 34, 127, 25);
 		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"Lavarropa", "Televisor"}));
-		if (elec instanceof Lavarropas)
+		
+		/*if (cbxTipo.getSelectedIndex() == 0) // Muestra los controles que se pueden usar si se selecciona la opcion Lavarropa
 		{
-			cbxTipo.setSelectedItem("Lavarropa");
+			agregarElectrodomestico();
+			agregarLavarropa();
 		}
-		else
+		else // Muestra los controles que se pueden usar si se selecciona la opcion Televisor
 		{
-			cbxTipo.setSelectedItem("Televisor");
-		}
-		cbxTipo.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED)
-					if (cbxTipo.getSelectedIndex() == 0) // Muestra los controles que se pueden usar si se selecciona la opcion Lavarropa
-					{
-						agregarElectrodomestico();
-						agregarLavarropa();
-					}
-					else // Muestra los controles que se pueden usar si se selecciona la opcion Televisor
-					{
-						agregarElectrodomestico();
-						agregarTelevisor();
-					}
-			}
-		});
+			agregarElectrodomestico();
+			agregarTelevisor();
+		}*/
+		cbxTipo.setEnabled(false);
 		cbxTipo.setToolTipText("");
 		contentPane.add(cbxTipo);
 	
@@ -169,6 +158,7 @@ public class frmModificar extends JFrame {
 				ne.modificarElectrodomestico(elec, "television");
 				}
 				JOptionPane.showMessageDialog(null, "Electrodomestico modificado", "Información", JOptionPane.INFORMATION_MESSAGE);	
+				dispose();
 			}
 		});
 		contentPane.add(btnGuardar);
@@ -247,8 +237,21 @@ public class frmModificar extends JFrame {
 		cbxConsumo = new JComboBox(consumos);
 		cbxConsumo.setBounds(205, 206, 200, 25);
 		contentPane.add(cbxConsumo);
-		cbxConsumo.setSelectedItem(elec.getConsumo().getConsumo());
+		cbxConsumo.setSelectedItem(String.valueOf(elec.getConsumo().getConsumo()));
 		cbxConsumo.setVisible(false);
+		
+		if (elec instanceof Lavarropas)
+		{
+			cbxTipo.setSelectedItem("Lavarropa");
+			agregarElectrodomestico();
+			agregarLavarropa();
+		}
+		else
+		{
+			cbxTipo.setSelectedItem("Televisor");
+			agregarElectrodomestico();
+			agregarTelevisor();
+		}
 		
 		datosDeElec(elec);
 	}

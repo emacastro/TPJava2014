@@ -177,13 +177,13 @@ public class ElectrodomesticoAdapter {
 	
 	public void updateOne (Electrodomestico elec, String tipo)
 	{
-		String sql="UPDATE electrodomestico SET(precio=?,peso=?,carga=?,sintonizador=?,resolucion=?,color=?,consumo=?) WHERE id =?";
+		String sql="update electrodomestico set precio=?,peso=?,carga=?,sintonizador=?,resolucion=?,color=?,consumo=? where id_Electrodomestico=?";
 		PreparedStatement ps = null;
 		try
 		{
 			//probar sacando el color, consumo e id fuera del if
 			ps = DataConnectionManager.getInstancia().getConexion().prepareStatement(sql);
-			if (elec instanceof Lavarropas) {
+			if (tipo.equals("lavarropas")) {
 				ps.setDouble(1, elec.getPrecioBase());
 				ps.setDouble(2, elec.getPeso());
 				ps.setDouble(3, ((Lavarropas)elec).getCarga());
@@ -206,7 +206,7 @@ public class ElectrodomesticoAdapter {
 				ps.setString(7, consen.substring(0,1));
 				ps.setInt(8, elec.getId());
 			}
-			ps.execute();
+			ps.executeUpdate();
 		}
 		catch (SQLException e)
 		{
