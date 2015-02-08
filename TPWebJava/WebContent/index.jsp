@@ -1,16 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="Negocio.*" %>
-<%@ page import="Entidades.*" %>
+<%@ page import="java.util.ArrayList"
+    import="Entidades.*"
+ 	import="Negocio.*" %>
+
+<% ArrayList<Electrodomestico> elecs = new ArrayList<Electrodomestico>(); %>
+<% elecs = (ArrayList<Electrodomestico>)(new NegElectrodomestico()).listarElectrodomesticos(); %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<title>TPJava</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -44,28 +47,34 @@
                   </tr>
               </thead>
               <tbody>
-              	<%! ArrayList<Electrodomestico> elecs = (new NegElectrodomestico()).listarElectrodomesticos(); %>
+              	
                   <%
-                  for(Electrodomestico el: elecs) {
+                  for(int i=0;i<elecs.size();i++) {
                   %>
                   <tr>
-                  <td> <%= el.getId() %>
+                  <td> <%= elecs.get(i).getId() %>
                   </td>
-                  <td> <%= el.getClass().getSimpleName() %>
+                  <td> <%= elecs.get(i).getClass().getSimpleName() %>
                   </td>
-                  <td> <%= el.getColor().getColor() %>
+                  <td> <%= elecs.get(i).getColor().getColor() %>
                   </td>
-                  <td> <%= el.getConsumo().getConsumo() %>
+                  <td> <%= elecs.get(i).getConsumo().getConsumo() %>
                   </td>
-                  <td> <%= el.getPeso() %>
+                  <td> <%= elecs.get(i).getPeso() %>
                   </td>
-                  <td> Carga
+                  <td> <% if (elecs.get(i) instanceof Lavarropas){%>
+                	  <%= ((Lavarropas)elecs.get(i)).getCarga() %>
+                  <%}%>
                   </td>
-                  <td> Resolucion
+                  <td> <% if (elecs.get(i) instanceof Television){%>
+                	  <%= ((Television)elecs.get(i)).getResolucion() %>
+                  <%}%>
                   </td>
-                  <td> Sintonizador
+                  <td> <% if (elecs.get(i) instanceof Television){%>
+                	  <%= ((Television)elecs.get(i)).isSintonizador() %>
+                  <%}%>
                   </td>
-                  <td> <%= el.getPrecioBase() %>
+                  <td> <%= elecs.get(i).getPrecioBase() %>
                   </td>
                   </tr>
                   <%
@@ -80,7 +89,7 @@
         </div>
         <div class="col-md-4 column">
           <div class="btn-group btn-group-md">
-            <button type="button" onclick=" location.href='nuevoElectrodomestico.html'" class="btn btn-default">Agregar</button>
+            <button type="button" onclick=" location.href='nuevoElectrodomestico.jsp'" class="btn btn-default">Agregar</button>
             <button type="button" class="btn btn-default">Modificar</button>
             <button type="button" class="btn btn-default">Eliminar</button>
             <button type="button" class="btn btn-default">Búsqueda</button>
