@@ -70,8 +70,11 @@
                 	  <%= ((Television)elecs.get(i)).getResolucion() %>
                   <%}%>
                   </td>
-                  <td> <% if (elecs.get(i) instanceof Television){%>
-                	  <%= ((Television)elecs.get(i)).isSintonizador() %>
+                  <td> <% if (elecs.get(i) instanceof Television){
+                	  		boolean sint = ((Television)elecs.get(i)).isSintonizador();
+                	  		if(sint){%>
+                		  		<span class="glyphicon glyphicon-ok"></span> 
+                	  <%}%>
                   <%}%>
                   </td>
                   <td> <%= elecs.get(i).getPrecioBase() %>
@@ -87,15 +90,15 @@
       <div class="row clearfix">
         <div class="col-md-4 column">
         </div>
-        <div class="col-md-4 column">
+        <div class="col-md-6 column">
           <div class="btn-group btn-group-md">
-            <button type="button" onclick=" location.href='nuevoElectrodomestico.jsp'" class="btn btn-default">Agregar</button>
-            <button type="button" class="btn btn-default">Modificar</button>
-            <button type="button" class="btn btn-default">Eliminar</button>
-            <button type="button" class="btn btn-default">Búsqueda</button>
+            <button type="button" onclick=" location.href='nuevoElectrodomestico.jsp'" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Agregar</button>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span> Modificar</button>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Búsqueda</button>
           </div>
         </div>
-        <div class="col-md-4 column">
+        <div class="col-md-2 column">
         </div>
       </div>
 

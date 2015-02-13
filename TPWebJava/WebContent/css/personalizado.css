@@ -1,0 +1,4 @@
+@CHARSET "ISO-8859-1";
+div.vacio, .vacioLav, .vacioTel{
+	display:none;
+}
