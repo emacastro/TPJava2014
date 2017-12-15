@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+org.jboss.tools.openshift.Connection=https\://crzemanuelc%40gmail.com@console.starter-us-east-1.openshift.com
+org.jboss.tools.openshift.DeployProject=TPWebJava
+org.jboss.tools.openshift.PodPath=
+org.jboss.tools.openshift.Service=electrodomesticos@electrodomesticos
+org.jboss.tools.openshift.SourcePath=${workspace_loc\:/TPWebJava}
